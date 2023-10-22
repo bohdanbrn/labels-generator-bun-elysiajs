@@ -9,3 +9,4 @@ bun run start:dev
 ```
 
 Open http://localhost:3000/ with your browser to see the result.
+Open http://localhost:3000/docs with your browser to see the documentation.
