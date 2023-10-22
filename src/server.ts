@@ -1,11 +1,13 @@
 import { Elysia } from "elysia";
+import { labelsRoute } from "./routes/labels.route";
+import { staticPlugin } from "@elysiajs/static";
 import { swagger } from "@elysiajs/swagger";
 import { SwaggerConfig } from "./configs/swagger.config";
-import { usersRoute } from "./routes/users.route";
 
 const app = new Elysia()
     .use(swagger(SwaggerConfig))
-    .use(usersRoute)
+    .use(labelsRoute)
+    .use(staticPlugin())
     .listen(process.env.PORT ?? 3000, ({ hostname, port }) => {
         console.log(`Running at http://${hostname}:${port}`);
     });
