@@ -1,4 +1,8 @@
 {
+    "files.eol": "\n",
+    "files.exclude": {
+        "**/.git": false
+    },
     "editor.tabSize": 4,
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -6,9 +10,16 @@
         "source.fixAll.eslint": true
     },
     "eslint.lintTask.enable": true,
-    "javascript.format.insertSpaceBeforeFunctionParenthesis": false,
-    "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-    "typescript.extension.sortImports.sortOnSave": true,
     "cSpell.logLevel": "Information",
-    "cSpell.ignoreWords": ["elysia", "Elysia", "elysiajs", "tsbuildinfo", "codepaths"]
+    "cSpell.ignoreWords": [
+        "elysia",
+        "Elysia",
+        "elysiajs",
+        "tsbuildinfo",
+        "codepaths",
+        "Docxtemplater",
+        "pizzip",
+        "linebreaks",
+        "nodebuffer"
+    ]
 }
