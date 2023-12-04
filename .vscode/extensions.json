@@ -5,6 +5,7 @@
         "mikestead.dotenv", // .env syntax highlighting
         "streetsidesoftware.code-spell-checker", // spell checker
         "wayou.vscode-todo-highlight", // highlight "TODO:" in code
-        "eamodio.gitlens" // work with git
+        "eamodio.gitlens", // work with git
+        "ShahilKumar.docxreader" // docx viewer
     ]
 }

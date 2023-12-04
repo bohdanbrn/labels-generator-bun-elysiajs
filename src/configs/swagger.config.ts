@@ -1,11 +1,7 @@
-import { ElysiaSwaggerConfig } from "@elysiajs/swagger/src/types";
+import { ElysiaSwaggerConfig } from "@elysiajs/swagger/dist/types";
 
-const SwaggerConfig: ElysiaSwaggerConfig = {
+const SwaggerConfig = {
     path: "/docs",
-    info: {
-        title: "App Documentation",
-        version: "1.0.0",
-    },
     excludeStaticFile: true,
     exclude: ["/docs", "/docs/json"],
 };
