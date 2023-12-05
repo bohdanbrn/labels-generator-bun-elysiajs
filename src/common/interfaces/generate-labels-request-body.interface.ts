@@ -1,4 +1,4 @@
-export interface LabelDataInterface {
+export interface GenerateLabelsRequestBodyInterface {
     model: string;
     size: string;
     description: string;

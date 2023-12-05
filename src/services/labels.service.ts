@@ -1,10 +1,14 @@
+import { DocxHelper } from "@src/common/helpers/docx.helper";
 import { LogHelper } from "@src/common/helpers/log.helper";
-import { LabelDataInterface } from "@src/common/interfaces/label-data.interface";
-import { Document, ImageRun, Packer, Paragraph, Table, TableCell, TableRow } from "docx";
+import { GenerateLabelsRequestBodyInterface } from "@src/common/interfaces/generate-labels-request-body.interface";
+import { GenerateLabelsItemType } from "@src/common/types/generate-labels-item.type";
+import { BorderStyle, Document, ImageRun, Packer, Paragraph, Table, TableCell, TableRow } from "docx";
 import * as fs from "fs";
 import * as path from "path";
 
 export class LabelsService {
+    private static readonly brandImagePath = path.join(import.meta.dir, "../../public/assets/images/label.png");
+
     static async showLabelsForm() {
         try {
             return Bun.file("public/generate-labels.html");
@@ -13,44 +17,20 @@ export class LabelsService {
         }
     }
 
-    static async generateLabels(labelsData: LabelDataInterface[]) {
+    static async generateLabels(labelsData: GenerateLabelsRequestBodyInterface[]) {
         try {
             if (!Array.isArray(labelsData) || !labelsData.length) {
                 return LogHelper.getErrorResponseData();
             }
 
-            const preparedData: any[] = [];
+            const preparedData: GenerateLabelsItemType[] = [];
             labelsData.forEach((item) => {
                 for (let i = 0; i < item.quantity; i++) {
                     preparedData.push({ model: item.model, size: item.size, description: item.description });
                 }
             });
 
-            const image = new ImageRun({
-                data: fs.readFileSync(path.join(import.meta.dir, "../../public/assets/images/label.png")),
-                transformation: {
-                    width: 200,
-                    height: 74,
-                },
-                // floating: {
-                //     horizontalPosition: { offset: 1014400 },
-                //     verticalPosition: { offset: 1014400 },
-                // },
-            });
-
-            const table = new Table({
-                rows: preparedData.map((item) => {
-                    return new TableRow({
-                        children: [
-                            new TableCell({ children: [new Paragraph({ children: [image] })] }),
-                            new TableCell({ children: [new Paragraph(`Model: ${item.model}`)] }),
-                            new TableCell({ children: [new Paragraph(`Size: ${item.size}`)] }),
-                            new TableCell({ children: [new Paragraph(`Description: ${item.description}`)] }),
-                        ],
-                    });
-                }),
-            });
-
+            const table = LabelsService.generateTable(preparedData);
             const doc = new Document({
                 sections: [{ children: [table] }],
             });
@@ -67,5 +47,54 @@ export class LabelsService {
         } catch (e) {
             return LogHelper.getFatalErrorResponseData(e);
         }
+    }
+
+    static generateTable(data: GenerateLabelsItemType[]) {
+        return new Table({
+            rows: data.map((item) => {
+                return new TableRow({
+                    children: [LabelsService.generateTableCell(item)],
+                });
+            }),
+            borders: DocxHelper.getTableBorder(),
+        });
+    }
+
+    static generateTableCell(data: GenerateLabelsItemType) {
+        const brandImage = new ImageRun({
+            data: fs.readFileSync(LabelsService.brandImagePath),
+            transformation: {
+                width: 200,
+                height: 74,
+            },
+        });
+
+        return new TableCell({
+            children: [
+                new Table({
+                    rows: [
+                        new TableRow({
+                            children: [
+                                new TableCell({
+                                    children: [
+                                        new Paragraph({ children: [brandImage], border: DocxHelper.getTableBorder() }),
+                                    ],
+                                    borders: DocxHelper.getTableBorder(),
+                                }),
+                                new TableCell({
+                                    children: [
+                                        new Paragraph(`Model: ${data.model}`),
+                                        new Paragraph(`Size: ${data.size}`),
+                                        new Paragraph(`Description: ${data.description}`),
+                                    ],
+                                    borders: DocxHelper.getTableBorder(),
+                                }),
+                            ],
+                        }),
+                    ],
+                    borders: DocxHelper.getTableBorder(),
+                }),
+            ],
+        });
     }
 }
