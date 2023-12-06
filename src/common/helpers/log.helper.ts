@@ -9,7 +9,7 @@ export class LogHelper {
         };
     }
 
-    static getFatalErrorResponseData(e: any, params?: any): { success: boolean; error: string } {
+    static getFatalErrorResponseData(e: any, params?: object): { success: boolean; error: string } {
         console.error(e);
         console.error({ params });
 

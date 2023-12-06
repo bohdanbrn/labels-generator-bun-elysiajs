@@ -1,8 +1,8 @@
+import { SwaggerConfig } from "./configs/swagger.config";
+import { labelsRoute } from "./routes/labels.route";
 import { staticPlugin } from "@elysiajs/static";
 import { swagger } from "@elysiajs/swagger";
-import { SwaggerConfig } from "./configs/swagger.config";
 import { Elysia } from "elysia";
-import { labelsRoute } from "./routes/labels.route";
 
 export const app = new Elysia()
     .use(swagger(SwaggerConfig))

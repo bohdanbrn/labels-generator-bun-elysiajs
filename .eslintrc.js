@@ -2,14 +2,15 @@ module.exports = {
     parser: "@typescript-eslint/parser",
     parserOptions: {
         project: "tsconfig.json",
-        tsconfigRootDir: import.meta.dir,
+        tsconfigRootDir: __dirname,
         sourceType: "module",
     },
+    plugins: ["@typescript-eslint", "simple-import-sort", "unused-imports"],
     extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
-    plugins: ["@typescript-eslint", "unused-imports"],
     root: true,
     env: {
         node: true,
+        browser: true,
         jest: true,
     },
     ignorePatterns: [".eslintrc.js"],
@@ -30,6 +31,7 @@ module.exports = {
         quotes: ["error", "double"],
         semi: ["error", "always"],
         "no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "off",
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
             "warn",
@@ -41,5 +43,6 @@ module.exports = {
                 groups: [],
             },
         ],
+        "simple-import-sort/exports": "error",
     },
 };

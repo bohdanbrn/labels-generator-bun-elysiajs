@@ -19,14 +19,17 @@
 
     submitButtonEl.addEventListener("click", async function () {
         try {
+            addEntryEl.disabled = true;
+            submitButtonEl.disabled = true;
+
             const entries = document.querySelectorAll(".entry");
             const labelsData = [];
 
             entries.forEach((entry) => {
-                const model = entry.querySelector('input[name="model[]"]').value;
-                const size = entry.querySelector('input[name="size[]"]').value;
-                const description = entry.querySelector('input[name="description[]"]').value;
-                const quantity = entry.querySelector('input[name="quantity[]"]').value;
+                const model = entry.querySelector("input[name='model[]']").value;
+                const size = entry.querySelector("input[name='size[]']").value;
+                const description = entry.querySelector("input[name='description[]']").value;
+                const quantity = entry.querySelector("input[name='quantity[]']").value;
 
                 labelsData.push({
                     model: model,
@@ -36,7 +39,7 @@
                 });
             });
 
-            const result = await fetch(`/labels/`, {
+            const result = await fetch("/labels/", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ labels: labelsData }),
@@ -51,6 +54,9 @@
 
             downloadLinkEl.innerHTML = `<a href="${responseBody.filePath}">${responseBody.filePath}</a>`;
             resultContainerEl.className = "d-block";
+
+            addEntryEl.disabled = false;
+            submitButtonEl.disabled = false;
         } catch (err) {
             alert("Something went wrong!");
             console.error(err);

@@ -9,15 +9,17 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
     "eslint.lintTask.enable": true,
     "cSpell.logLevel": "Information",
+    "cSpell.caseSensitive": false,
     "cSpell.ignoreWords": [
         "elysia",
-        "Elysia",
         "elysiajs",
         "tsbuildinfo",
         "codepaths",
-        "Docxtemplater",
+        "docxtemplater",
         "pizzip",
         "linebreaks",
         "nodebuffer"
