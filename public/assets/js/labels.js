@@ -19,6 +19,7 @@
 
     submitButtonEl.addEventListener("click", async function () {
         try {
+            downloadLinkEl.innerHTML = "";
             addEntryEl.disabled = true;
             submitButtonEl.disabled = true;
 
