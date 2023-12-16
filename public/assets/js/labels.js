@@ -6,7 +6,7 @@
 
     addEntryEl.addEventListener("click", function () {
         const entriesContainer = document.getElementById("form_entries");
-        const newEntry = document.querySelector(".entry").cloneNode(true);
+        const newEntry = document.querySelector(".entry:last-child").cloneNode(true);
         newEntry.querySelector(".remove-entry").classList.remove("d-none");
         entriesContainer.appendChild(newEntry);
     });
@@ -53,7 +53,7 @@
                 throw new Error(responseBody.error);
             }
 
-            downloadLinkEl.innerHTML = `<a href="${responseBody.filePath}">${responseBody.filePath}</a>`;
+            downloadLinkEl.innerHTML = `<a href="../${responseBody.filePath}">${responseBody.filePath}</a>`;
             resultContainerEl.className = "d-block";
 
             addEntryEl.disabled = false;

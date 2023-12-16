@@ -1,4 +1,5 @@
 import { GenerateLabelsItemType } from "../types/generate-labels-item.type";
+import { CommonHelper } from "./common.helper";
 import {
     AlignmentType,
     BorderStyle,
@@ -21,7 +22,9 @@ export class DocxHelper {
     private static readonly brandImagePath = path.join(import.meta.dir, "../../../public/assets/images/label.png");
 
     static async generateLabelsDocumentBuffer(data: GenerateLabelsItemType[]): Promise<Buffer> {
-        const table = DocxHelper.generateLabelsList(data);
+        const dataPairs = CommonHelper.splitIntoPairs<GenerateLabelsItemType>(data);
+
+        const table = DocxHelper.generateLabelsList(dataPairs);
         const document = new Document({
             sections: [
                 {
@@ -43,18 +46,23 @@ export class DocxHelper {
         return await Packer.toBuffer(document);
     }
 
-    static generateLabelsList(data: GenerateLabelsItemType[]) {
+    static generateLabelsList(dataPairs: Array<[GenerateLabelsItemType, GenerateLabelsItemType?]>): Table {
         return new Table({
-            rows: data.map((item) => {
+            rows: dataPairs.map((dataPair) => {
+                const childrenData = [DocxHelper.generateSingleLabel(dataPair[0])];
+                if (dataPair[1]) {
+                    childrenData.push(DocxHelper.generateSingleLabel(dataPair[1]));
+                }
+
                 return new TableRow({
-                    children: [DocxHelper.generateSingleLabel(item)],
+                    children: childrenData,
                 });
             }),
             borders: DocxHelper.getZeroBorder(),
         });
     }
 
-    static generateSingleLabel(data: GenerateLabelsItemType) {
+    static generateSingleLabel(data: GenerateLabelsItemType): TableCell {
         const brandImage = new ImageRun({
             data: fs.readFileSync(DocxHelper.brandImagePath),
             transformation: {
@@ -73,14 +81,26 @@ export class DocxHelper {
                                     children: [
                                         new Paragraph({ children: [brandImage], border: DocxHelper.getZeroBorder() }),
                                     ],
+                                    width: {
+                                        size: 50,
+                                        type: WidthType.PERCENTAGE,
+                                    },
                                     borders: DocxHelper.getZeroBorder(),
                                 }),
                                 new TableCell({
                                     children: [
-                                        this.generateSingleLabelDataItem("Модель:", data.model),
-                                        this.generateSingleLabelDataItem("Розмір:", data.size),
+                                        this.generateSingleLabelDataItem("Model:", data.model),
+                                        this.generateSingleLabelDataItem("Size:", data.size),
                                     ],
+                                    width: {
+                                        size: 50,
+                                        type: WidthType.PERCENTAGE,
+                                    },
                                     borders: DocxHelper.getZeroBorder(),
+                                    margins: {
+                                        left: 200,
+                                        right: 200,
+                                    },
                                 }),
                             ],
                         }),
@@ -89,15 +109,16 @@ export class DocxHelper {
                     borders: DocxHelper.getZeroBorder(),
                 }),
             ],
-            width: {
-                size: 50,
-                type: WidthType.PERCENTAGE,
-            },
             borders: DocxHelper.getZeroBorder(),
+            margins: {
+                left: 200,
+                right: 200,
+                bottom: 500,
+            },
         });
     }
 
-    static generateSingleLabelDataItem(title: string, value: string) {
+    static generateSingleLabelDataItem(title: string, value: string): Table {
         return new Table({
             rows: [
                 new TableRow({
@@ -125,13 +146,16 @@ export class DocxHelper {
                                         new TextRun({
                                             text: value,
                                             bold: true,
-                                            font: "Times New Roman",
+                                            font: "Calibri",
                                             size: 52,
                                         }),
                                     ],
                                 }),
                             ],
                             borders: DocxHelper.getZeroBorder(),
+                            margins: {
+                                left: 150,
+                            },
                         }),
                     ],
                 }),
@@ -140,7 +164,7 @@ export class DocxHelper {
         });
     }
 
-    static generateSingleLabelDescription(labelDescription: string) {
+    static generateSingleLabelDescription(labelDescription: string): TableRow {
         return new TableRow({
             children: [
                 new TableCell({
