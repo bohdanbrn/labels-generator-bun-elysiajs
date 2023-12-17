@@ -1,21 +1,21 @@
 <!doctype html>
 <html>
     <head>
-        <title>Labels configuration</title>
+        <title>Barva moda</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     </head>
 
     <body>
         <div class="container">
-            <h2 class="mt-5">Labels configuration</h2>
+            <h2 class="mt-5">Barva moda</h2>
             <form id="data_form">
                 <div class="border-top border-left border-right pl-3 pr-3">
                     <div class="form-row">
-                        <div class="col-md-3 py-2 border-right"><span for="name">Model:</span></div>
-                        <div class="col-md-2 py-2 border-right"><span for="color">Size:</span></div>
-                        <div class="col-md-4 py-2 border-right"><span for="color">Description:</span></div>
-                        <div class="col-md-1 py-2"><span for="color">Quantity:</span></div>
+                        <div class="col-md-3 py-2 border-right"><span for="name">Модель:</span></div>
+                        <div class="col-md-2 py-2 border-right"><span for="color">Розмір:</span></div>
+                        <div class="col-md-4 py-2 border-right"><span for="color">Опис:</span></div>
+                        <div class="col-md-1 py-2"><span for="color">Кількість:</span></div>
                     </div>
                 </div>
                 <div id="form_entries" class="border mb-3">
@@ -42,13 +42,13 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" id="add_entry">Add Entry</button>
-                <button type="button" class="btn btn-danger" id="submit_button">Submit</button>
+                <button type="button" class="btn btn-primary" id="add_entry">Додати</button>
+                <button type="button" class="btn btn-danger" id="submit_button">Відправити</button>
             </form>
             <br />
 
             <div id="result_container" class="d-none">
-                <span>File link: </span>
+                <span>Файл: </span>
                 <div id="download_link"></div>
             </div>
         </div>

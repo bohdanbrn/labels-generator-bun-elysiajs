@@ -89,8 +89,8 @@ export class DocxHelper {
                                 }),
                                 new TableCell({
                                     children: [
-                                        this.generateSingleLabelDataItem("Model:", data.model),
-                                        this.generateSingleLabelDataItem("Size:", data.size),
+                                        this.generateSingleLabelDataItem("Модель:", data.model),
+                                        this.generateSingleLabelDataItem("Розмір:", data.size),
                                     ],
                                     width: {
                                         size: 50,
