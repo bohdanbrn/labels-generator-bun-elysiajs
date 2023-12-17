@@ -9,16 +9,16 @@
     "dependencies": {
         "@elysiajs/static": "^0.7.1",
         "@elysiajs/swagger": "^0.7.4",
-        "bun": "^1.0.15",
+        "bun": "^1.0.18",
         "docx": "^8.2.4",
         "elysia": "^0.7.30"
     },
     "devDependencies": {
-        "@types/node": "^20.10.3",
-        "@typescript-eslint/eslint-plugin": "^6.13.2",
-        "@typescript-eslint/parser": "^6.13.2",
-        "bun-types": "^1.0.15",
-        "eslint": "^8.55.0",
+        "@types/node": "^20.10.4",
+        "@typescript-eslint/eslint-plugin": "^6.14.0",
+        "@typescript-eslint/parser": "^6.14.0",
+        "bun-types": "^1.0.18",
+        "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-prettier": "^5.0.1",
         "eslint-plugin-simple-import-sort": "^10.0.0",
