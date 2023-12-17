@@ -113,7 +113,7 @@ export class DocxHelper {
             margins: {
                 left: 200,
                 right: 200,
-                bottom: 500,
+                bottom: 400,
             },
         });
     }
