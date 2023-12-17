@@ -7,11 +7,17 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
+        "source.fixAll.eslint": "explicit"
     },
     "javascript.updateImportsOnFileMove.enabled": "always",
     "typescript.updateImportsOnFileMove.enabled": "always",
     "eslint.lintTask.enable": true,
+    "eslint.format.enable": true,
+    "eslint.experimental.useFlatConfig": true,
+    "eslint.runtime": "bun",
+    "eslint.execArgv": ["--bun"],
+    "eslint.trace.server": "messages",
+    "eslint.workingDirectories": [{ "mode": "auto" }],
     "cSpell.logLevel": "Information",
     "cSpell.caseSensitive": false,
     "cSpell.ignoreWords": [
@@ -22,6 +28,8 @@
         "docxtemplater",
         "pizzip",
         "linebreaks",
-        "nodebuffer"
+        "nodebuffer",
+        "calibri",
+        "occured"
     ]
 }
