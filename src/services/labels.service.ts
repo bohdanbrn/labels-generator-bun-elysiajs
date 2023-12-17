@@ -27,8 +27,13 @@ export class LabelsService {
                 }
             });
 
-            const filePath = path.join(import.meta.dir, "../../public/labels.docx");
             const documentBuffer = await DocxHelper.generateLabelsDocumentBuffer(preparedData);
+
+            const filePath = path.join(import.meta.dir, "../../public/labels.docx");
+
+            if (fs.existsSync(filePath)) {
+                fs.rmSync(filePath);
+            }
 
             fs.writeFileSync(filePath, documentBuffer);
 
