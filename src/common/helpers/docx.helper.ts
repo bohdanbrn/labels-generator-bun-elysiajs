@@ -32,7 +32,7 @@ export class DocxHelper {
                     properties: {
                         page: {
                             margin: {
-                                top: 0,
+                                top: 200,
                                 right: 0,
                                 bottom: 0,
                                 left: 0,
