@@ -17,9 +17,34 @@ import {
 } from "docx";
 import * as fs from "fs";
 import * as path from "path";
+import { LogHelper } from "./log.helper";
 
 export class DocxHelper {
     private static readonly brandImagePath = path.join(import.meta.dir, "../../../public/assets/images/label.png");
+
+    static saveLabelsFile(fileBuffer: Buffer): string | void {
+        try {
+            const fileName = `labels-${Date.now()}.docx`;
+            const dirPath = `public/files`;
+            const dirPathFull = path.join(import.meta.dir, "../../..", dirPath);
+            const filePath = path.join(dirPathFull, `/${fileName}`);
+
+            if (!fs.existsSync(dirPathFull)) {
+                fs.mkdirSync(dirPathFull, { recursive: true });
+            }
+
+            const dirFiles = fs.readdirSync(dirPathFull);
+            for (const dirFile of dirFiles) {
+                fs.rmSync(path.join(dirPathFull, dirFile));
+            }
+
+            fs.writeFileSync(filePath, fileBuffer);
+
+            return `${dirPath}/${fileName}`;
+        } catch (e) {
+            LogHelper.fatalError("DocxHelper.saveLabelsFile", e);
+        }
+    }
 
     static async generateLabelsDocumentBuffer(data: GenerateLabelsItemType[]): Promise<Buffer> {
         const dataPairs = CommonHelper.splitIntoPairs<GenerateLabelsItemType>(data);
@@ -104,9 +129,20 @@ export class DocxHelper {
                                 }),
                             ],
                         }),
-                        this.generateSingleLabelDescription(data.description),
                     ],
                     borders: DocxHelper.getZeroBorder(),
+                }),
+                new Paragraph({
+                    children: [
+                        new TextRun({
+                            text: `(${data.description})`,
+                            bold: true,
+                            italics: true,
+                            font: "Times New Roman",
+                            size: 32,
+                        }),
+                    ],
+                    alignment: AlignmentType.CENTER,
                 }),
             ],
             borders: DocxHelper.getZeroBorder(),
@@ -161,30 +197,6 @@ export class DocxHelper {
                 }),
             ],
             borders: DocxHelper.getZeroBorder(),
-        });
-    }
-
-    static generateSingleLabelDescription(labelDescription: string): TableRow {
-        return new TableRow({
-            children: [
-                new TableCell({
-                    children: [
-                        new Paragraph({
-                            children: [
-                                new TextRun({
-                                    text: `(${labelDescription})`,
-                                    bold: true,
-                                    italics: true,
-                                    font: "Times New Roman",
-                                    size: 32,
-                                }),
-                            ],
-                            alignment: AlignmentType.CENTER,
-                        }),
-                    ],
-                    borders: DocxHelper.getZeroBorder(),
-                }),
-            ],
         });
     }
 

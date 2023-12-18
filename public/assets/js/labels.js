@@ -52,7 +52,9 @@
 
             const fileName = responseBody.filePath.split("/").slice(-1)[0];
 
-            downloadURI(responseBody.filePath, fileName);
+            if (responseBody.filePath && fileName) {
+                downloadURI(responseBody.filePath, fileName);
+            }
         } catch (err) {
             alert("Something went wrong!");
             console.error(err);
