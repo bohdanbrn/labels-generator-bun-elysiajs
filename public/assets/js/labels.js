@@ -1,8 +1,6 @@
 (() => {
     const addEntryEl = document.getElementById("add_entry");
     const submitButtonEl = document.getElementById("submit_button");
-    const resultContainerEl = document.getElementById("result_container");
-    const downloadLinkEl = document.getElementById("download_link");
 
     addEntryEl.addEventListener("click", function () {
         const entriesContainer = document.getElementById("form_entries");
@@ -19,7 +17,6 @@
 
     submitButtonEl.addEventListener("click", async function () {
         try {
-            downloadLinkEl.innerHTML = "";
             addEntryEl.disabled = true;
             submitButtonEl.disabled = true;
 
@@ -53,14 +50,25 @@
                 throw new Error(responseBody.error);
             }
 
-            downloadLinkEl.innerHTML = `<a href="../${responseBody.filePath}">${responseBody.filePath}</a>`;
-            resultContainerEl.className = "d-block";
+            const fileName = responseBody.filePath.split("/").slice(-1)[0];
 
-            addEntryEl.disabled = false;
-            submitButtonEl.disabled = false;
+            downloadURI(responseBody.filePath, fileName);
         } catch (err) {
             alert("Something went wrong!");
             console.error(err);
+        } finally {
+            addEntryEl.disabled = false;
+            submitButtonEl.disabled = false;
         }
     });
+
+    function downloadURI(uri, name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+    }
 })();
