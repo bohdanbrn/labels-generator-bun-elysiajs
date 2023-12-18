@@ -1,4 +1,5 @@
 import { DocxHelper } from "@src/common/helpers/docx.helper";
+import { LogHelper } from "@src/common/helpers/log.helper";
 import { ResponseHelper } from "@src/common/helpers/response.helper";
 import { GenerateLabelsRequestBodyInterface } from "@src/common/interfaces/generate-labels-request-body.interface";
 import { GenerateLabelsItemType } from "@src/common/types/generate-labels-item.type";
@@ -27,22 +28,36 @@ export class LabelsService {
                 }
             });
 
-            const documentBuffer = await DocxHelper.generateLabelsDocumentBuffer(preparedData);
+            const fileBuffer = await DocxHelper.generateLabelsDocumentBuffer(preparedData);
+            const filePath = await LabelsService.saveLabelsFile(fileBuffer);
 
-            const filePath = path.join(import.meta.dir, "../../public/labels.docx");
-
-            if (fs.existsSync(filePath)) {
-                fs.rmSync(filePath);
-            }
-
-            fs.writeFileSync(filePath, documentBuffer);
-
-            return { filePath: "public/labels.docx" };
-
-            // Google Drive
-            // https://console.cloud.google.com/apis/library/drive.googleapis.com?authuser=1&project=barvamoda&supportedpurview=project
+            return { filePath };
         } catch (e) {
             return ResponseHelper.getFatalErrorResponseData("LabelsService.generateLabels", e, { labelsData });
+        }
+    }
+
+    private static async saveLabelsFile(fileBuffer: Buffer): Promise<string | void> {
+        try {
+            const fileName = `labels-${Date.now()}.docx`;
+            const dirPath = `public/files`;
+            const dirPathFull = path.join(import.meta.dir, "../..", dirPath);
+            const filePath = path.join(dirPathFull, `/${fileName}`);
+
+            if (!fs.existsSync(dirPathFull)) {
+                fs.mkdirSync(dirPathFull, { recursive: true });
+            }
+
+            const dirFiles = fs.readdirSync(dirPathFull);
+            for (const dirFile of dirFiles) {
+                fs.rmSync(path.join(dirPathFull, dirFile));
+            }
+
+            fs.writeFileSync(filePath, fileBuffer);
+
+            return `${dirPath}/${fileName}`;
+        } catch (e) {
+            LogHelper.fatalError("LabelsService.saveLabelsFile", e);
         }
     }
 }
